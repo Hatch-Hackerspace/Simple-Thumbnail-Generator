@@ -1,8 +1,8 @@
 #!/bin/bash
 clear
-echo "This is a simple bash script to resize jpg images to a box of specified values while preserving aspect ratio. You should run it from the folder with the images you want resized (you may need to run as root). It ignores files marked with the current pre tag and moves them to a folder named with the pre tag (so you can run it a few times). Also tells you how many files were proccessed."
+echo "This is a simple bash script to resize jpg images to a box of specified values while preserving aspect ratio. You should run it from the folder with the images you want resized (you may need to run as root). It ignores files marked with the current pre tag (and overwrites them). Also tells you how many files were proccessed."
 echo "This script was made by George Marusteru @ Hatch Hackerspace Bucharest" 
-echo "This script is offered as is, you can consider it GPLv3 license, meaning this it is free software and you can do whatever you want with it except release it in a different license." 
+echo "This script is offered as is, you can consider it GPLv3 liscence, meaning this is free software and you can do whatever you want with it except release it in a different liscence." 
 read -e -p "Please specify your user name (the script may need to be run as root, this just changes the files ownership back to you when done):" owner;
 echo "Thank you, your username is: $owner"
 read -e -p "Please specifiy a pre tag (the underscore is included, ex: 'thumb'): " -i "thumb" tag;
@@ -30,7 +30,6 @@ echo "Yeah, $quality doesn't look like a valid number [1-100]. Defaulting to 75.
 quality=75
 fi
 count=0
-mkdir $tag
 for i in [!^$tag]*.jpg [!^$tag]*.JPG 
 do
 echo "Processing image $i ..."
@@ -38,6 +37,5 @@ djpeg $i | pnmscale -xysize $xvalue $yvalue | cjpeg -optimize -progressive -qual
 chown $owner $tag"_"$i
 echo $i processed
 count=$[$count+1]
-mv --verbose $tag"_"$i ./$tag/$tag"_"$i
 done
-echo "$count files proccessed. Congrats ! "
+echo "$count files proccessed."
